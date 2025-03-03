@@ -945,38 +945,8 @@ void UTurnInPlace::DebugRotation() const
 #endif
 }
 
-static bool bHasWarnedSimpleAnimation = false;
 void UTurnInPlace::DebugServerPhysicsBodies() const
 {
-#if UE_ENABLE_DEBUG_DRAWING
-	// Draw Server's physics bodies
-	if (bDrawServerPhysicsBodies && PawnOwner && GetOwner()->GetLocalRole() == ROLE_Authority && GetNetMode() != NM_Standalone)
-	{
-#if WITH_SIMPLE_ANIMATION
-		USimpleAnimLib::DrawPawnDebugPhysicsBodies(PawnOwner, GetMesh(), true, false, false);
-#else
-		if (!bHasWarnedSimpleAnimation)
-		{
-			bHasWarnedSimpleAnimation = true;
-			const FText ErrorMsg = FText::Format(
-				LOCTEXT("NoSimpleAnimPlugin", "{0} is trying to draw server animation but SimpleAnimation plugin was not found. Disable UTurnInPlace::bDrawServerAnimation"),
-				FText::FromString(GetName()));
-#if WITH_EDITOR
-			// Show a notification in the editor
-			FNotificationInfo Info(ErrorMsg);
-			Info.ExpireDuration = 6.f;
-			FSlateNotificationManager::Get().AddNotification(Info);
-
-			// Log the error to message log
-			FMessageLog("PIE").Error(ErrorMsg);
-#else
-			// Log the error to the output log
-			UE_LOG(LogTurnInPlace, Error, TEXT("%s"), *ErrorMsg.ToString());
-#endif
-		}
-#endif
-	}
-#endif
 }
 
 #undef LOCTEXT_NAMESPACE

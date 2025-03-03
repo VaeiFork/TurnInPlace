@@ -24,16 +24,6 @@ class ACTORTURNINPLACE_API UTurnInPlace : public UActorComponent
 
 public:
 	/**
-	 * Draw server's physics bodies in editor - non-shipping builds only, not available in standalone
-	 * Allows us to visualize what the server is doing animation-wise
-	 * 
-	 * Requires SimpleAnimation plugin to be present and enabled
-	 * https://github.com/Vaei/SimpleAnimation
-	 */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Turn)
-	bool bDrawServerPhysicsBodies = false;
-
-	/**
 	 * Allows server to optionally update without playing actual animations
 	 * Pseudo is helpful if we don't want to refresh bones on tick for the mesh for performance reasons
 	 */
