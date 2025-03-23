@@ -22,7 +22,7 @@
 		},
 		{
 			"Name": "ActorTurnInPlaceEditor",
-			"Type": "Editor",
+			"Type": "EditorNoCommandlet",
 			"LoadingPhase": "PreDefault"
 		}
 	],
