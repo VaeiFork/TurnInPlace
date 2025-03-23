@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "TurnInPlaceTypes.h"
-#include "GameFramework/Character.h"
+#include "ModularCharacter.h"
 #include "TurnInPlaceCharacter.generated.h"
 
 class UTurnInPlaceMovement;
@@ -16,7 +16,7 @@ class UTurnInPlace;
  * @note You cannot integrate TurnInPlace in blueprints and must derive this character because you cannot override FaceRotation, etc.
  */
 UCLASS(Blueprintable)
-class ACTORTURNINPLACE_API ATurnInPlaceCharacter : public ACharacter
+class ACTORTURNINPLACE_API ATurnInPlaceCharacter : public AModularCharacter
 {
 	GENERATED_BODY()
 
@@ -35,6 +35,14 @@ public:
 public:
 	ATurnInPlaceCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
+	virtual UActorComponent* FindComponentByClass(const TSubclassOf<UActorComponent> ComponentClass) const override;
+
+	template<class T>
+	T* FindComponentByClass() const
+	{
+		return AActor::FindComponentByClass<T>();
+	}
+	
 public:
 	/**
 	 * Character is currently turning in place if the TurnYawWeight curve is not 0
