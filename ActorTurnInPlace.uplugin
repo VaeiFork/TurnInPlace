@@ -31,6 +31,10 @@
 			"Name": "SimpleAnimation",
 			"Enabled": false,
 			"Optional": true
+		},
+		{
+			"Name": "ModularGameplayActors",
+			"Enabled": true
 		}
 	]
 }
