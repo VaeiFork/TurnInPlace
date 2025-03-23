@@ -14,6 +14,7 @@ public class ActorTurnInPlace : ModuleRules
 			{
 				"Core",
 				"GameplayTags",
+				"ModularGameplayActors",
 			}
 			);
 			

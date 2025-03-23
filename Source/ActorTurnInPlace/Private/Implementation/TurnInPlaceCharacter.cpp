@@ -34,6 +34,15 @@ ATurnInPlaceCharacter::ATurnInPlaceCharacter(const FObjectInitializer& ObjectIni
 	}
 }
 
+UActorComponent* ATurnInPlaceCharacter::FindComponentByClass(const TSubclassOf<UActorComponent> ComponentClass) const
+{
+	if (TurnInPlace && ComponentClass && TurnInPlace->IsA(ComponentClass))
+	{
+		return TurnInPlace;
+	}
+	return Super::FindComponentByClass(ComponentClass);
+}
+
 bool ATurnInPlaceCharacter::IsTurningInPlace() const
 {
 	return TurnInPlace && TurnInPlace->IsTurningInPlace();
