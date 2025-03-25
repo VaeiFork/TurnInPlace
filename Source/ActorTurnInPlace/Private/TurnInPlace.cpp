@@ -248,19 +248,6 @@ bool UTurnInPlace::IsCharacterStationary() const
 	return GetOwner()->GetVelocity().IsNearlyZero();
 }
 
-UAnimMontage* UTurnInPlace::GetCurrentMontage() const
-{
-	if (bIsValidAnimInstance)
-	{
-		// Get the root motion montage instance and return the montage
-		if (const FAnimMontageInstance* MontageInstance = AnimInstance->GetRootMotionMontageInstance())
-		{
-			return MontageInstance->Montage;
-		}
-	}
-	return nullptr;
-}
-
 UAnimMontage* UTurnInPlace::GetCurrentNetworkRootMotionMontage() const
 {
 	// Check if the character is playing a networked root motion montage
