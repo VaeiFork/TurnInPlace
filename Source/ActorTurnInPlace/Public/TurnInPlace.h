@@ -293,8 +293,4 @@ protected:
 public:
 	/** Debug the turn in place properties if enabled */
 	virtual void DebugRotation() const;
-
-protected:
-	/** Debug server's anims by drawing physics bodies. Must be called externally from character's Tick() */
-	virtual void DebugServerPhysicsBodies() const;
 };
