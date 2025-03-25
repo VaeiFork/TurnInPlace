@@ -944,9 +944,6 @@ void UTurnInPlace::DebugRotation() const
 		return;
 	}
 
-	// Optionally draw server's physics bodies so we can visualize what they're doing animation-wise
-	DebugServerPhysicsBodies();
-
 	// Turn Offset Screen Text
 	if (TurnInPlaceCvars::bDebugTurnOffset && GEngine)
 	{
@@ -994,10 +991,6 @@ void UTurnInPlace::DebugRotation() const
 		}
 	}
 #endif
-}
-
-void UTurnInPlace::DebugServerPhysicsBodies() const
-{
 }
 
 #undef LOCTEXT_NAMESPACE
