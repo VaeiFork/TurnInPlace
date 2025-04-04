@@ -343,7 +343,7 @@ FVector UTurnInPlace::GetDebugDrawArrowLocation_Implementation(bool& bIsValidLoc
 	return ActorLocation - (FVector::UpVector * HalfHeight);
 }
 
-ETurnInPlaceOverride UTurnInPlace::OverrideTurnInPlace_Implementation() const
+ETurnInPlaceOverride UTurnInPlace::OverrideTurnInPlace() const
 {
 #if !UE_BUILD_SHIPPING
 	if (TurnInPlaceCvars::OverrideTurnInPlace > 0)

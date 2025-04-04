@@ -175,9 +175,7 @@ public:
 	 * ForceLocked: Always locked in place and will not rotate regardless of the params from the animation blueprint
 	 * ForceDisabled: Will not accumulate any turn offset, allowing normal behaviour expected of a system without any turn in place. Useful for root motion montages.
 	 */
-	UFUNCTION(BlueprintNativeEvent, Category=Turn)
-	ETurnInPlaceOverride OverrideTurnInPlace() const;
-	virtual ETurnInPlaceOverride OverrideTurnInPlace_Implementation() const;
+	virtual ETurnInPlaceOverride OverrideTurnInPlace() const;
 
 	/**
 	 * TurnMode is used to determine which FTurnInPlaceAngles to use
