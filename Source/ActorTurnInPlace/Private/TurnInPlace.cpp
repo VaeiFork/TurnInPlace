@@ -197,6 +197,8 @@ void UTurnInPlace::DestroyComponent(bool bPromoteChildren)
 
 void UTurnInPlace::OnAnimInstanceChanged()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UTurnInPlace::OnAnimInstanceChanged);
+	
 	// Cache the AnimInstance and check if it implements UTurnInPlaceAnimInterface
 	AnimInstance = GetMesh()->GetAnimInstance();
 	bIsValidAnimInstance = false;
@@ -249,6 +251,8 @@ bool UTurnInPlace::IsCharacterStationary() const
 
 UAnimMontage* UTurnInPlace::GetCurrentNetworkRootMotionMontage() const
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UTurnInPlace::GetCurrentNetworkRootMotionMontage);
+	
 	// Check if the character is playing a networked root motion montage
 	if (bIsValidAnimInstance && IsPlayingNetworkedRootMotionMontage())
 	{
@@ -263,6 +267,8 @@ UAnimMontage* UTurnInPlace::GetCurrentNetworkRootMotionMontage() const
 
 ETurnInPlaceOverride UTurnInPlace::GetOverrideForMontage_Implementation(const UAnimMontage* Montage) const
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UTurnInPlace::GetOverrideForMontage);
+	
 	// Allow overriding per-montage
 	if (HasValidData() && Montage)
 	{
@@ -330,6 +336,7 @@ bool UTurnInPlace::ShouldIgnoreRootMotionMontage_Implementation(const UAnimMonta
 
 FVector UTurnInPlace::GetDebugDrawArrowLocation_Implementation(bool& bIsValidLocation) const
 {
+#if UE_ENABLE_DEBUG_DRAWING
 	if (!HasValidData() || !MaybeCharacter || !MaybeCharacter->GetCapsuleComponent())
 	{
 		bIsValidLocation = false;
@@ -341,10 +348,15 @@ FVector UTurnInPlace::GetDebugDrawArrowLocation_Implementation(bool& bIsValidLoc
 	const float HalfHeight = MaybeCharacter->GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 	const FVector& ActorLocation = MaybeCharacter->GetActorLocation();
 	return ActorLocation - (FVector::UpVector * HalfHeight);
+#else
+	return FVector::ZeroVector;
+#endif
 }
 
 ETurnInPlaceOverride UTurnInPlace::OverrideTurnInPlace() const
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UTurnInPlace::OverrideTurnInPlace);
+	
 #if !UE_BUILD_SHIPPING
 	if (TurnInPlaceCvars::OverrideTurnInPlace > 0)
 	{
@@ -388,6 +400,8 @@ ETurnInPlaceOverride UTurnInPlace::OverrideTurnInPlace() const
 
 FGameplayTag UTurnInPlace::GetTurnModeTag_Implementation() const
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UTurnInPlace::GetTurnModeTag);
+	
 	// Determine the turn mode tag based on the character's movement settings
 	const bool bIsStrafing = MaybeCharacter && MaybeCharacter->GetCharacterMovement() && !MaybeCharacter->GetCharacterMovement()->bOrientRotationToMovement;
 	return bIsStrafing ? FTurnInPlaceTags::TurnMode_Strafe : FTurnInPlaceTags::TurnMode_Movement;
@@ -433,6 +447,8 @@ FTurnInPlaceParams UTurnInPlace::GetParams() const
 
 FTurnInPlaceCurveValues UTurnInPlace::GetCurveValues() const
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UTurnInPlace::GetCurveValues);
+	
 	if (!HasValidData())
 	{
 		return {};
@@ -468,6 +484,8 @@ bool UTurnInPlace::HasValidData() const
 
 ETurnMethod UTurnInPlace::GetTurnMethod() const
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UTurnInPlace::GetTurnMethod);
+	
 	if (!HasValidData() || !MaybeCharacter || !MaybeCharacter->GetCharacterMovement())
 	{
 		return ETurnMethod::None;
@@ -490,6 +508,8 @@ ETurnMethod UTurnInPlace::GetTurnMethod() const
 
 bool UTurnInPlace::HasTurnOffsetChanged(float CurrentValue, float LastValue)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UTurnInPlace::HasTurnOffsetChanged);
+	
 	const FQuat LastTurnQuat = FRotator(0.f, LastValue, 0.f).Quaternion();
 	const FQuat CurrentTurnQuat = FRotator(0.f, CurrentValue, 0.f).Quaternion();
 	return !CurrentTurnQuat.Equals(LastTurnQuat, TURN_ROTATOR_TOLERANCE);
@@ -497,6 +517,8 @@ bool UTurnInPlace::HasTurnOffsetChanged(float CurrentValue, float LastValue)
 
 void UTurnInPlace::SimulateTurnInPlace()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UTurnInPlace::SimulateTurnInPlace);
+	
 	if (bSimulateAnimationCurves && HasValidData() && GetOwnerRole() == ROLE_SimulatedProxy && IsCharacterStationary())
 	{
 		TurnInPlace(FRotator::ZeroRotator, FRotator::ZeroRotator, true);
