@@ -794,6 +794,9 @@ FTurnInPlaceAnimGraphData UTurnInPlace::UpdateAnimGraphData(float DeltaTime) con
 	AnimGraphData.TurnModeTag = GetTurnModeTag();
 	AnimGraphData.bWantsPseudoAnimState = WantsPseudoAnimState();
 
+	// Abort the turn if we became unable to turn in place during a turn
+	AnimGraphData.bAbortTurn = State != ETurnInPlaceEnabledState::Enabled && CanAbortTurnAnimation();
+
 	// Determine if we have valid turn angles for the current turn mode tag and cache the result
 	if (const FTurnInPlaceAngles* TurnAngles = Params.GetTurnAngles(GetTurnModeTag()))
 	{
@@ -857,7 +860,15 @@ void UTurnInPlace::UpdatePseudoAnimState(float DeltaTime, const FTurnInPlaceAnim
 		}
 		break;
 	case ETurnPseudoAnimState::TurnInPlace:
-		if (TurnOutput.bWantsTurnRecovery)
+		if (TurnOutput.bAbortTurn)
+		{
+			PseudoAnimState = ETurnPseudoAnimState::Idle;
+
+			// SetupIdle()
+			PseudoNodeData.TurnPlayRate = 1.f;
+			PseudoNodeData.bHasReachedMaxTurnAngle = false;
+		}
+		else if (TurnOutput.bWantsTurnRecovery)
 		{
 			PseudoAnimState = ETurnPseudoAnimState::Recovery;
 
